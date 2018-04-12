@@ -1,4 +1,6 @@
-turtles-own [food-eaten]  ; variable
+turtles-own [food-eaten return_to_nest? blah]  ; variable
+
+patches-own [nest?]
 
 to Set_Up   ; define the intial world
   clear-all
@@ -6,13 +8,24 @@ to Set_Up   ; define the intial world
   create-turtles population
   ask turtles
   [
+    set return_to_nest? false
     set shape "bug"
     set size 2
     set color red
     set food-eaten 0
+    set blah 0
   ]
   grow-food
+  set_up_nest
 
+end
+
+
+to set_up_nest
+  ask patches [
+    set nest? (distancexy 0 0) < 2
+    if nest? [set pcolor orange]
+  ]
 end
 
 to Go  ; general algo for model
