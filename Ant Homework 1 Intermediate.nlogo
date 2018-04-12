@@ -32,19 +32,32 @@ to Go  ; general algo for model
   if not any? patches with [pcolor = green] [stop]
 
   ask turtles  ; defines the agent, or turtle
-  [
+  [ifelse return_to_nest? = false
+    [look_for_food]
+    [return_to_nest]
+  ]
+  tick
+end
+
+to return_to_nest
+  face patch 0 0 fd 1
+  if pcolor = orange
+  [set return_to_nest? false]
+end
+
+
+to look_for_food
     ifelse coin-flip? [right random Max_Turn_Angle] [left random Max_Turn_Angle]
     forward random Max_Step_Size
     if pcolor = green
     [
      set pcolor black
      set food-eaten (food-eaten + 1)
+     set return_to_nest? true
      set label food-eaten
       if (food-eaten > 4) [set color orange]
       if (food-eaten > 10) [set color blue]
     ]
-  ]
-  tick
 end
 
 to-report coin-flip?
@@ -135,7 +148,7 @@ Population
 Population
 1
 200
-50.0
+20.0
 1
 1
 NIL
